@@ -2,10 +2,10 @@ import { Link, useLocation } from 'react-router-dom'
 import { ArrowLeft, ArrowUpRight, Compass, Search } from 'lucide-react'
 
 const LINKS = [
-  { label: 'Dashboard', to: '/dashboard', detail: 'Institutional scale and urgent actions' },
-  { label: 'FDR Registry', to: '/instruments', detail: 'Search and filter all seeded instruments' },
-  { label: 'Integrity Intelligence', to: '/integrity', detail: 'Explainable cross-record findings' },
-  { label: 'Demo Scenarios', to: '/demo-scenarios', detail: 'Six guided judging paths' },
+  { label: 'Overview', to: '/app/overview', detail: 'Institutional scale and urgent actions' },
+  { label: 'Instrument registry', to: '/app/instruments', detail: 'Search and filter all seeded instruments' },
+  { label: 'Verification findings', to: '/app/verification?view=findings', detail: 'Explainable cross-record findings' },
+  { label: 'Guided demo', to: '/app/demo', detail: 'Six guided judging paths' },
 ]
 
 export default function NotFound() {
@@ -28,10 +28,10 @@ export default function NotFound() {
             in this demonstration build.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <Link to="/dashboard" className="btn-dark btn-sm">
+            <Link to="/app/overview" className="btn-dark btn-sm">
               <ArrowLeft size={12} /> Return to dashboard
             </Link>
-            <Link to="/instruments" className="btn-secondary btn-sm">
+            <Link to="/app/instruments" className="btn-secondary btn-sm">
               <Search size={12} /> Search the registry
             </Link>
           </div>
@@ -61,7 +61,7 @@ export default function NotFound() {
           <div className="mt-5 border border-line bg-paper/40 px-3.5 py-3">
             <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted">Tip</div>
             <p className="mt-1 text-[10px] leading-relaxed text-inkSoft">
-              Instrument URLs follow <span className="font-mono">/instruments/FDR-YYYY-NNN</span>. Use global search
+              Instrument URLs follow <span className="font-mono">/app/instruments/FDR-YYYY-NNN</span>. Use global search
               from the top bar to locate a record by reference, institution, bank, or finding.
             </p>
           </div>

@@ -35,7 +35,7 @@ export function DemoPathPanel() {
       </ol>
       <div className="border-t border-white/10 px-4 py-2.5">
         <Link
-          to="/demo-scenarios"
+          to="/app/demo"
           className="inline-flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.08em] text-copper transition-colors hover:text-[#E6B99A]"
         >
           Run guided scenarios <ArrowUpRight size={11} />

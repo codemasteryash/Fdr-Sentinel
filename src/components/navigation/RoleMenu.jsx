@@ -111,7 +111,7 @@ export function RoleMenu() {
               type="button"
               className="flex w-full items-center gap-2 text-[10.5px] font-medium text-forest hover:text-copper"
               onClick={() => {
-                navigate('/settings')
+                navigate('/app/settings')
                 close()
               }}
             >

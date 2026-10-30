@@ -20,7 +20,7 @@ export function addNotification(payload) {
       title: payload.title,
       message: payload.message,
       instrumentId: payload.instrumentId ?? null,
-      href: payload.href ?? '/dashboard',
+      href: payload.href ?? '/app/overview',
       actionLabel: payload.actionLabel ?? 'View',
       createdAt: todayISO(),
       read: false,

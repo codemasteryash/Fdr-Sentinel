@@ -93,7 +93,7 @@ export function reviewFinding({ findingId, decision, notes = '', user: userOverr
     title: `${findingId} ${FINDING_DECISIONS[decision].toLowerCase()}`,
     message: `Decision recorded for ${finding.instrumentId}: ${FINDING_DECISIONS[decision]}.`,
     instrumentId: finding.instrumentId,
-    href: `/integrity?finding=${findingId}`,
+    href: `/app/verification?view=findings&finding=${findingId}`,
     actionLabel: 'View finding',
   })
 

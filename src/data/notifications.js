@@ -9,7 +9,7 @@ export const SEED_NOTIFICATIONS = [
     message:
       'Brahmputra Institute of Technology has not submitted renewal instructions for an instrument that matured 40 days ago.',
     instrumentId: 'FDR-2025-024',
-    href: '/deadlines?focus=renewal%3AFDR-2025-024',
+    href: '/app/lifecycle?view=deadlines&focus=renewal%3AFDR-2025-024',
     createdAt: daysFromNow(-1),
     read: false,
     actionLabel: 'Review deadline',
@@ -22,7 +22,7 @@ export const SEED_NOTIFICATIONS = [
     message:
       'DNB-847291 is used by two institutions with different principal amounts. A reviewer decision is required.',
     instrumentId: 'FDR-2026-004',
-    href: '/integrity?finding=FND-2026-001',
+    href: '/app/verification?view=findings&finding=FND-2026-001',
     createdAt: daysFromNow(-1),
     read: false,
     actionLabel: 'Open finding',
@@ -35,7 +35,7 @@ export const SEED_NOTIFICATIONS = [
     message:
       'Deccan Institute of Applied Sciences has an FDR maturing in 13 days. The 30-day lead-time action is active.',
     instrumentId: 'FDR-2026-003',
-    href: '/deadlines?focus=renewal%3AFDR-2026-003',
+    href: '/app/lifecycle?view=deadlines&focus=renewal%3AFDR-2026-003',
     createdAt: daysFromNow(-2),
     read: false,
     actionLabel: 'View action',
@@ -48,7 +48,7 @@ export const SEED_NOTIFICATIONS = [
     message:
       'Release is under review but the approving-authority sign-off is not recorded. Release remains blocked.',
     instrumentId: 'FDR-2026-017',
-    href: '/lifecycle/FDR-2026-017',
+    href: '/app/lifecycle/FDR-2026-017',
     createdAt: daysFromNow(-2),
     read: false,
     actionLabel: 'Open release case',
@@ -61,7 +61,7 @@ export const SEED_NOTIFICATIONS = [
     message:
       'Vindhya Institute of Management was asked to reconcile a ₹50,000 amount difference in the submitted instrument.',
     instrumentId: 'FDR-2026-009',
-    href: '/verification/FDR-2026-009',
+    href: '/app/verification/FDR-2026-009',
     createdAt: daysFromNow(-4),
     read: false,
     actionLabel: 'View case',
@@ -74,7 +74,7 @@ export const SEED_NOTIFICATIONS = [
     message:
       'Internal checks are complete for the Northfield record. Independent confirmation is still pending.',
     instrumentId: 'FDR-2026-011',
-    href: '/verification/FDR-2026-011',
+    href: '/app/verification/FDR-2026-011',
     createdAt: daysFromNow(-3),
     read: true,
     actionLabel: 'Open verification',
@@ -86,7 +86,7 @@ export const SEED_NOTIFICATIONS = [
     title: 'Evidence follow-up — FDR-2026-014',
     message: 'Beneficiary evidence is missing from both the submission and the source document.',
     instrumentId: 'FDR-2026-014',
-    href: '/instruments/FDR-2026-014?tab=evidence',
+    href: '/app/instruments/FDR-2026-014?tab=evidence',
     createdAt: daysFromNow(-5),
     read: true,
     actionLabel: 'Open evidence',
@@ -99,7 +99,7 @@ export const SEED_NOTIFICATIONS = [
     message:
       'The reference SLB-54I902 contains an I/1 ambiguity. Normalized comparison suggests SLB-541902.',
     instrumentId: 'FDR-2026-006',
-    href: '/instruments/FDR-2026-006?tab=integrity',
+    href: '/app/instruments/FDR-2026-006?tab=integrity',
     createdAt: daysFromNow(-2),
     read: true,
     actionLabel: 'Inspect ambiguity',
@@ -111,7 +111,7 @@ export const SEED_NOTIFICATIONS = [
     title: 'Finding resolved — FDR-2026-020',
     message: 'The historical missing-information finding remains visible after a correction was accepted.',
     instrumentId: 'FDR-2026-020',
-    href: '/instruments/FDR-2026-020?tab=audit',
+    href: '/app/instruments/FDR-2026-020?tab=audit',
     createdAt: daysFromNow(-20),
     read: true,
     actionLabel: 'View history',

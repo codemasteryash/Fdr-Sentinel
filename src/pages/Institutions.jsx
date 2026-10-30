@@ -147,7 +147,7 @@ export default function Institutions() {
                     <div className="min-w-0">
                       <div className="font-mono text-[9px] text-muted">{institution.id} · {institution.code}</div>
                       <h2 className="mt-1 font-display text-[18px] leading-tight text-ink">
-                        <Link to={`/institutions/${institution.id}`} className="hover:text-forest">
+                        <Link to={`/app/institutions/${institution.id}`} className="hover:text-forest">
                           {institution.shortName}
                         </Link>
                       </h2>
@@ -193,7 +193,7 @@ export default function Institutions() {
                         {Math.round(attention)}
                       </span>
                     </span>
-                    <Link to={`/institutions/${institution.id}`} className="inline-flex items-center gap-1 text-[10px] font-medium text-forest hover:text-copper">
+                    <Link to={`/app/institutions/${institution.id}`} className="inline-flex items-center gap-1 text-[10px] font-medium text-forest hover:text-copper">
                       Open profile <ArrowRight size={10} />
                     </Link>
                   </div>

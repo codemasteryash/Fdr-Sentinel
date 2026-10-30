@@ -114,7 +114,7 @@ export function FindingDrawer({ finding, state, open, onClose }) {
             {[instrument, related].filter(Boolean).map((record, index) => (
               <div key={record.id} className="border border-line bg-paper/40 px-3 py-3">
                 <div className="flex items-center justify-between gap-2">
-                  <Link to={`/instruments/${record.id}`} className="inline-flex items-center gap-1 font-mono text-[10px] text-forest hover:text-copper">
+                  <Link to={`/app/instruments/${record.id}`} className="inline-flex items-center gap-1 font-mono text-[10px] text-forest hover:text-copper">
                     {record.id} <ExternalLink size={9} />
                   </Link>
                   <StatusBadge tone={index === 0 ? 'copper' : 'neutral'} dot={false} className="text-[8px]">

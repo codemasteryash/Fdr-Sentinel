@@ -59,7 +59,7 @@ export function InstrumentOverview({ instrument, state, findings, evidence, onTa
           </div>
           <dl className="grid gap-x-6 gap-y-4 px-4 py-4 sm:grid-cols-2 lg:grid-cols-3">
             <Fact label="Institution">
-              <Link to={`/institutions/${instrument.institutionId}`} className="hover:text-copper">
+              <Link to={`/app/institutions/${instrument.institutionId}`} className="hover:text-copper">
                 {instrument.institutionName}
               </Link>
             </Fact>
@@ -180,7 +180,7 @@ export function InstrumentOverview({ instrument, state, findings, evidence, onTa
                   {activeFindings.slice(0, 3).map((finding) => (
                     <li key={finding.id}>
                       <Link
-                        to={`/integrity?finding=${finding.id}`}
+                        to={`/app/verification?view=findings&finding=${finding.id}`}
                         className="block px-4 py-3 transition-colors hover:bg-paper/50"
                       >
                         <div className="flex items-start justify-between gap-2">
@@ -229,7 +229,7 @@ export function InstrumentOverview({ instrument, state, findings, evidence, onTa
                   ? 'This record is closed under the demo policy. No further transitions are available.'
                   : 'Open the lifecycle workspace to see every configured transition, its required role, and any blocking policy checks before acting.'}
               </p>
-              <Link to={`/lifecycle/${instrument.id}`} className="mt-2 inline-block">
+              <Link to={`/app/lifecycle/${instrument.id}`} className="mt-2 inline-block">
                 <LinkArrow>Open lifecycle workspace</LinkArrow>
               </Link>
             </div>
@@ -240,7 +240,7 @@ export function InstrumentOverview({ instrument, state, findings, evidence, onTa
                 <CalendarClock size={13} className="text-copper" />
                 Maturity {relativeDays(instrument.maturityDate)}.
               </div>
-              <Link to="/deadlines" className="btn-ghost btn-xs">
+              <Link to="/app/lifecycle?view=deadlines" className="btn-ghost btn-xs">
                 Deadline queue <ArrowRight size={10} />
               </Link>
             </div>
@@ -274,7 +274,7 @@ export function InstrumentOverview({ instrument, state, findings, evidence, onTa
                 </li>
               ))}
             </ul>
-            <Link to={`/verification/${instrument.id}`} className="mt-3 block">
+            <Link to={`/app/verification/${instrument.id}`} className="mt-3 block">
               <span className="btn-secondary btn-sm w-full">
                 Open verification workspace <ArrowRight size={12} />
               </span>
@@ -378,7 +378,7 @@ export function InstrumentOverview({ instrument, state, findings, evidence, onTa
             </ul>
           )}
           <div className="border-t border-line px-4 py-2.5">
-            <Link to="/deadlines" className="btn-ghost btn-xs w-full">
+            <Link to="/app/lifecycle?view=deadlines" className="btn-ghost btn-xs w-full">
               Open deadline queue <ArrowRight size={11} />
             </Link>
           </div>

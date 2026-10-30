@@ -295,7 +295,7 @@ export function returnInstrumentToInstitution(instrumentId, note, userOverride) 
       title: `Correction requested — ${instrumentId}`,
       message: `The instrument was returned to ${instrument?.institutionName ?? 'the institution'} with a reviewer reason.`,
       instrumentId,
-      href: `/instruments/${instrumentId}`,
+      href: `/app/instruments/${instrumentId}`,
       actionLabel: 'Open instrument',
     })
   }

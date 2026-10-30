@@ -22,7 +22,7 @@ export function IntegrityRiskPanel({ findings, stats }) {
           <div className="overline">Integrity risk</div>
           <h2 className="font-display text-lg text-ink">Unresolved signals</h2>
         </div>
-        <Link to="/integrity" className="btn-icon h-6 w-6" aria-label="Open integrity intelligence">
+        <Link to="/app/verification?view=findings" className="btn-icon h-6 w-6" aria-label="Open integrity intelligence">
           <ArrowRight size={13} />
         </Link>
       </div>
@@ -52,7 +52,7 @@ export function IntegrityRiskPanel({ findings, stats }) {
         {top.map((finding) => (
           <li key={finding.id}>
             <Link
-              to={`/integrity?finding=${finding.id}`}
+              to={`/app/verification?view=findings&finding=${finding.id}`}
               className="block px-4 py-2.5 transition-colors hover:bg-copper/[0.03]"
             >
               <div className="flex items-center justify-between gap-2">

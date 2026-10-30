@@ -3,14 +3,18 @@ import { Download, ShieldCheck, ShieldAlert, Link2, Hash } from 'lucide-react'
 import { toast } from 'sonner'
 import { AuditTimeline } from './AuditTimeline'
 import { exportAudit } from '../../services/exportService'
-import { verifyAuditChain } from '../../utils/hash'
 import { SectionHeading, SearchInput } from '../shared/ui'
 import { StatusBadge } from '../shared/StatusBadge'
 import { auditActionLabel } from '../../services/auditService'
 
-export function AuditPanel({ events, entityId, showEntity = false, title = 'Audit trail' }) {
+export function AuditPanel({
+  events,
+  entityId,
+  showEntity = false,
+  title = 'Audit trail',
+  chain = null,
+}) {
   const [query, setQuery] = useState('')
-  const chain = useMemo(() => verifyAuditChain(events), [events])
   const filtered = useMemo(() => {
     const value = query.trim().toLowerCase()
     if (!value) return events
@@ -44,13 +48,26 @@ export function AuditPanel({ events, entityId, showEntity = false, title = 'Audi
           <div className="text-[9.5px] text-muted">{entityId ? `Scoped to ${entityId}` : 'All demo events'}</div>
         </div>
         <div className="panel px-4 py-3">
-          <div className="overline mb-1">Chain verification</div>
-          <div className="mt-1">
-            <StatusBadge tone={chain.valid ? 'success' : 'critical'}>
-              {chain.valid ? 'Chain valid' : `${chain.broken.length} broken`}
-            </StatusBadge>
-          </div>
-          <div className="mt-1 text-[9.5px] text-muted">{chain.checked} hashes checked locally</div>
+          <div className="overline mb-1">{chain ? 'Chain verification' : 'View scope'}</div>
+          {chain ? (
+            <>
+              <div className="mt-1">
+                <StatusBadge tone={chain.valid ? 'success' : 'critical'}>
+                  {chain.valid ? 'Chain valid' : `${chain.broken.length} broken`}
+                </StatusBadge>
+              </div>
+              <div className="mt-1 text-[9.5px] text-muted">{chain.checked} hashes checked locally</div>
+            </>
+          ) : (
+            <>
+              <div className="mt-1">
+                <StatusBadge tone="neutral">Scoped subset</StatusBadge>
+              </div>
+              <div className="mt-1 text-[9.5px] leading-relaxed text-muted">
+                Global chain verification is shown in Governance → Audit trail.
+              </div>
+            </>
+          )}
         </div>
         <div className="panel px-4 py-3">
           <div className="overline mb-1">Assurance limit</div>
@@ -94,7 +111,12 @@ export function AuditPanel({ events, entityId, showEntity = false, title = 'Audi
             <Hash size={10} /> deterministic FNV-1a
           </span>
           <span className="inline-flex items-center gap-1">
-            <ShieldCheck size={10} /> {chain.valid ? 'all stored hashes match' : 'chain verification failed'}
+            <ShieldCheck size={10} />{' '}
+            {chain
+              ? chain.valid
+                ? 'all stored hashes match'
+                : 'chain verification failed'
+              : 'scoped events are not a complete hash chain'}
           </span>
         </div>
         <div className="px-4 py-5">

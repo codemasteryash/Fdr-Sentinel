@@ -5,11 +5,11 @@ import { formatDate, relativeDays } from '../../utils/format'
 import { PriorityBadge, StatusBadge } from '../shared/StatusBadge'
 
 function targetRoute(action) {
-  if (action.type === 'finding') return `/integrity?finding=${action.findingId}`
-  if (action.type === 'release') return `/lifecycle/${action.instrumentId}`
-  if (action.type === 'verification') return `/verification/${action.instrumentId}`
-  if (action.type === 'evidence') return `/instruments/${action.instrumentId}?tab=evidence`
-  return `/deadlines?focus=${encodeURIComponent(action.id)}`
+  if (action.type === 'finding') return `/app/verification?view=findings&finding=${action.findingId}`
+  if (action.type === 'release') return `/app/lifecycle/${action.instrumentId}`
+  if (action.type === 'verification') return `/app/verification/${action.instrumentId}`
+  if (action.type === 'evidence') return `/app/instruments/${action.instrumentId}?tab=evidence`
+  return `/app/lifecycle?view=deadlines&focus=${encodeURIComponent(action.id)}`
 }
 
 const STATUS_TONE = {
@@ -29,7 +29,7 @@ export function PriorityQueue({ actions, limit = 6 }) {
           <h2 className="font-display text-lg text-ink">Priority actions</h2>
         </div>
         <Link
-          to="/deadlines"
+          to="/app/lifecycle?view=deadlines"
           className="group inline-flex items-center gap-1 text-[10.5px] font-medium text-forest hover:text-copper"
         >
           Full deadline queue

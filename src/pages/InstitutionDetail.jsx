@@ -49,7 +49,7 @@ export default function InstitutionDetail() {
     return (
       <div>
         <PageHeader overline="Institutions · Not found" title="Institution not found" description="This synthetic institution does not exist in current browser state." />
-        <Link to="/institutions" className="btn-secondary"><ArrowLeft size={14} /> Institutions</Link>
+        <Link to="/app/governance?view=institutions" className="btn-secondary"><ArrowLeft size={14} /> Institutions</Link>
       </div>
     )
   }
@@ -58,7 +58,7 @@ export default function InstitutionDetail() {
     return (
       <div>
         <PageHeader overline="Institutions · Access scope" title="Institution outside your scope" description="The Institution Officer role is limited to its assigned institution." />
-        <Link to="/institutions" className="btn-secondary"><ArrowLeft size={14} /> Institutions</Link>
+        <Link to="/app/governance?view=institutions" className="btn-secondary"><ArrowLeft size={14} /> Institutions</Link>
       </div>
     )
   }
@@ -76,7 +76,7 @@ export default function InstitutionDetail() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-1.5 text-[10px] text-muted">
-        <Link to="/institutions" className="hover:text-forest">Institutions</Link>
+        <Link to="/app/governance?view=institutions" className="hover:text-forest">Institutions</Link>
         <span>›</span>
         <span className="font-mono text-inkSoft">{institution.id}</span>
         <span>›</span>
@@ -98,7 +98,7 @@ export default function InstitutionDetail() {
         }
         actions={
           <>
-            <Link to={`/instruments?institution=${institution.id}`} className="btn-secondary">
+            <Link to={`/app/instruments?institution=${institution.id}`} className="btn-secondary">
               <FileText size={14} /> View in registry
             </Link>
             {canManage && (
@@ -126,7 +126,7 @@ export default function InstitutionDetail() {
       </div>
 
       <div className="grid gap-5 xl:grid-cols-12">
-        <div className="space-y-5 xl:col-span-8">
+        <div className="min-w-0 space-y-5 xl:col-span-8">
           <section className="panel">
             <div className="flex items-center justify-between border-b border-line px-4 py-3">
               <SectionHeading overline="Profile" title="Institution record" />
@@ -174,7 +174,7 @@ export default function InstitutionDetail() {
           <section className="panel overflow-hidden">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-3">
               <SectionHeading overline="Portfolio" title="Linked instruments" description={`${instruments.length} synthetic FDR record(s).`} />
-              <Link to={`/instruments?institution=${institution.id}`} className="btn-ghost btn-xs">
+              <Link to={`/app/instruments?institution=${institution.id}`} className="btn-ghost btn-xs">
                 Open filtered registry <ArrowRight size={10} />
               </Link>
             </div>
@@ -203,7 +203,7 @@ export default function InstitutionDetail() {
                     {instruments.map((instrument) => (
                       <tr key={instrument.id}>
                         <td>
-                          <Link to={`/instruments/${instrument.id}`} className="font-mono text-[10px] text-forest hover:text-copper">
+                          <Link to={`/app/instruments/${instrument.id}`} className="font-mono text-[10px] text-forest hover:text-copper">
                             {instrument.id}
                           </Link>
                           <div className="font-mono text-[9px] text-muted">{instrument.reference}</div>
@@ -214,7 +214,7 @@ export default function InstitutionDetail() {
                         <td><LifecycleBadge status={instrument.lifecycleStatus} /></td>
                         <td><VerificationBadge status={instrument.verificationStatus} /></td>
                         <td>
-                          <Link to={`/instruments/${instrument.id}`} className="btn-icon h-6 w-6" aria-label={`Open ${instrument.id}`}>
+                          <Link to={`/app/instruments/${instrument.id}`} className="btn-icon h-6 w-6" aria-label={`Open ${instrument.id}`}>
                             <ArrowRight size={12} />
                           </Link>
                         </td>
@@ -229,7 +229,7 @@ export default function InstitutionDetail() {
           <section className="panel">
             <div className="flex items-center justify-between border-b border-line px-4 py-3">
               <SectionHeading overline="Integrity" title="Active findings across portfolio" description={`${activeFindings.length} open, in-review, or confirmed finding(s).`} />
-              <Link to={`/integrity`} className="btn-ghost btn-xs">Integrity Center <ArrowRight size={10} /></Link>
+              <Link to={`/app/verification?view=findings`} className="btn-ghost btn-xs">Integrity Center <ArrowRight size={10} /></Link>
             </div>
             {activeFindings.length === 0 ? (
               <div className="px-4 py-4 text-[11px] text-inkSoft">
@@ -244,7 +244,7 @@ export default function InstitutionDetail() {
                       <SeverityBadge severity={finding.severity} />
                       <FindingStatusBadge status={finding.reviewStatus} />
                     </div>
-                    <Link to={`/integrity?finding=${finding.id}`} className="mt-1 block text-[10.5px] font-medium text-ink hover:text-forest">
+                    <Link to={`/app/verification?view=findings&finding=${finding.id}`} className="mt-1 block text-[10.5px] font-medium text-ink hover:text-forest">
                       {finding.title}
                     </Link>
                     <div className="mt-0.5 text-[9px] text-muted">
@@ -257,7 +257,7 @@ export default function InstitutionDetail() {
           </section>
         </div>
 
-        <aside className="space-y-5 xl:col-span-4">
+        <aside className="min-w-0 space-y-5 xl:col-span-4">
           <section className="panel">
             <div className="border-b border-line px-4 py-3">
               <SectionHeading overline="Exposure" title="Concentration by bank" />

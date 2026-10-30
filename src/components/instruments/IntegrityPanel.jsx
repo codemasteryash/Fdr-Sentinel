@@ -77,7 +77,7 @@ function FindingCard({ finding, instrument }) {
             <Scale size={11} />
             Linked record:
             <Link
-              to={`/instruments/${finding.relatedInstrumentId}`}
+              to={`/app/instruments/${finding.relatedInstrumentId}`}
               className="font-mono text-forest hover:text-copper"
             >
               {finding.relatedInstrumentId}
@@ -95,7 +95,7 @@ function FindingCard({ finding, instrument }) {
         <span className="font-mono text-[8.5px] text-muted">
           {finding.reviewedAt ? `Reviewed ${formatDateTime(finding.reviewedAt)}` : `Created ${formatDateTime(finding.createdAt)}`}
         </span>
-        <Link to={`/integrity?finding=${finding.id}`} className="btn-secondary btn-xs">
+        <Link to={`/app/verification?view=findings&finding=${finding.id}`} className="btn-secondary btn-xs">
           Open in integrity workspace <ArrowRight size={10} />
         </Link>
       </div>
@@ -246,7 +246,7 @@ export function IntegrityPanel({ instrument, findings, state }) {
                   <li key={candidate.id} className="px-4 py-3">
                     <div className="flex items-center justify-between gap-2">
                       <Link
-                        to={`/instruments/${candidate.id}`}
+                        to={`/app/instruments/${candidate.id}`}
                         className="font-mono text-[10px] text-forest hover:text-copper"
                       >
                         {candidate.id}

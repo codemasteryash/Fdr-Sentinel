@@ -19,7 +19,7 @@ export function AppShell() {
       <Sidebar mobileOpen={mobileOpen} onCloseMobile={() => setMobileOpen(false)} />
       <div
         className={`min-h-screen transition-[padding] duration-200 ease-precise ${
-          collapsed ? 'lg:pl-[76px]' : 'lg:pl-[266px]'
+          collapsed ? 'lg:pl-[76px]' : 'lg:pl-[252px]'
         }`}
       >
         <Topbar onOpenMobile={() => setMobileOpen(true)} />

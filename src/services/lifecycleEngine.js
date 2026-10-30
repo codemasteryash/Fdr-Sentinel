@@ -436,7 +436,7 @@ export function performTransition({ instrumentId, to, reason = '', user: userOve
       title: `Release requested — ${instrumentId}`,
       message: `${instrument.institutionName} requested release of instrument ${instrument.reference}.`,
       instrumentId,
-      href: `/lifecycle/${instrumentId}`,
+      href: `/app/lifecycle/${instrumentId}`,
       actionLabel: 'Open release',
     })
   }

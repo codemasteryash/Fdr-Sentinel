@@ -176,7 +176,7 @@ export async function createInstrument(form) {
     title: `New instrument submitted — ${id}`,
     message: `${institution.name} registered ${instrument.reference}. Internal checks have not yet started.`,
     instrumentId: id,
-    href: `/instruments/${id}`,
+    href: `/app/instruments/${id}`,
     actionLabel: 'Open instrument',
   })
 
@@ -363,7 +363,7 @@ export function updateInstrumentMetadata(instrumentId, patch, reason, userOverri
     title: `Metadata corrected — ${instrumentId}`,
     message: `Correction recorded by ${user.name}. Prior findings were preserved and marked resolved where applicable.`,
     instrumentId,
-    href: `/instruments/${instrumentId}?tab=integrity`,
+    href: `/app/instruments/${instrumentId}?tab=integrity`,
     actionLabel: 'View history',
   })
 

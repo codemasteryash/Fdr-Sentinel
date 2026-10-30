@@ -173,7 +173,7 @@ export default function Instruments() {
             <button type="button" className="btn-secondary" onClick={handleExport}>
               <Download size={14} /> Export CSV
             </button>
-            <Link to="/instruments/new" className="btn-dark">
+            <Link to="/app/instruments/new" className="btn-dark">
               <Plus size={14} /> Register FDR
             </Link>
           </>
@@ -404,7 +404,7 @@ export default function Instruments() {
                       <tr key={instrument.id} className="group">
                         <td>
                           <Link
-                            to={`/instruments/${instrument.id}`}
+                            to={`/app/instruments/${instrument.id}`}
                             className="font-mono text-[11.5px] font-medium text-forest hover:text-copper"
                           >
                             {instrument.id}
@@ -445,7 +445,7 @@ export default function Instruments() {
                           <button
                             type="button"
                             className="btn-icon h-7 w-7"
-                            onClick={() => navigate(`/instruments/${instrument.id}`)}
+                            onClick={() => navigate(`/app/instruments/${instrument.id}`)}
                             aria-label={`Open ${instrument.id}`}
                           >
                             <Eye size={14} />

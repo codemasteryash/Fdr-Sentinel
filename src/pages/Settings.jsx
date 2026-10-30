@@ -459,7 +459,7 @@ export default function Settings() {
                 <div className="mt-1.5 text-[9px] text-muted">
                   {formatDateTime(latestAudit.timestamp)} · {latestAudit.actorName}
                 </div>
-                <Link to="/audit" className="mt-2 inline-flex items-center gap-1 text-[10px] font-medium text-forest hover:text-copper">
+                <Link to="/app/governance?view=audit" className="mt-2 inline-flex items-center gap-1 text-[10px] font-medium text-forest hover:text-copper">
                   Open audit trail
                 </Link>
               </div>

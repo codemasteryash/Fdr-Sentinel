@@ -246,7 +246,7 @@ export function EvidencePanel({ instrument, evidence, state, highlightField = ''
             Showing {filtered.length} of {evidence.length} fields · Open a row to inspect provenance and
             act.
           </span>
-          <Link to={`/verification/${instrument.id}`} className="btn-ghost btn-xs">
+          <Link to={`/app/verification/${instrument.id}`} className="btn-ghost btn-xs">
             Verification workspace <ArrowRight size={10} />
           </Link>
         </div>
@@ -350,7 +350,7 @@ export function EvidencePanel({ instrument, evidence, state, highlightField = ''
                 {linkedFindings.map((finding) => (
                   <Link
                     key={finding.id}
-                    to={`/integrity?finding=${finding.id}`}
+                    to={`/app/verification?view=findings&finding=${finding.id}`}
                     className="flex items-center justify-between gap-2 border border-line px-3 py-2.5 hover:border-lineStrong"
                   >
                     <div>
@@ -453,7 +453,7 @@ export function EvidencePanel({ instrument, evidence, state, highlightField = ''
               : ''}
             missing fields: {coverage.missing}.
           </div>
-          <Link to={`/verification/${instrument.id}`} className="btn-secondary btn-xs">
+          <Link to={`/app/verification/${instrument.id}`} className="btn-secondary btn-xs">
             Verification checklist <ArrowRight size={10} />
           </Link>
         </div>

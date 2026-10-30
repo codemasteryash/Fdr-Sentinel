@@ -51,9 +51,9 @@ function runDuplicateScenario() {
       ),
     ],
     links: [
-      { label: 'Open finding FND-2026-001', to: '/integrity?finding=FND-2026-001' },
-      { label: 'Inspect Deccan record', to: '/instruments/FDR-2026-004' },
-      { label: 'Inspect Northfield record', to: '/instruments/FDR-2026-011' },
+      { label: 'Open finding FND-2026-001', to: '/app/verification?view=findings&finding=FND-2026-001' },
+      { label: 'Inspect Deccan record', to: '/app/instruments/FDR-2026-004' },
+      { label: 'Inspect Northfield record', to: '/app/instruments/FDR-2026-011' },
     ],
     findingId: finding?.id ?? 'FND-2026-001',
     instrumentId: 'FDR-2026-004',
@@ -89,8 +89,8 @@ function runOcrScenario() {
       ),
     ],
     links: [
-      { label: 'Open evidence passport', to: '/instruments/FDR-2026-006?tab=evidence' },
-      { label: 'Open FND-2026-003', to: '/integrity?finding=FND-2026-003' },
+      { label: 'Open evidence passport', to: '/app/instruments/FDR-2026-006?tab=evidence' },
+      { label: 'Open FND-2026-003', to: '/app/verification?view=findings&finding=FND-2026-003' },
     ],
     instrumentId: 'FDR-2026-006',
   }
@@ -107,7 +107,7 @@ function runReleaseScenario() {
       steps: [
         step('Approval already recorded', 'The current state does not reproduce the blocked transition.', 'blocked'),
       ],
-      links: [{ label: 'Open lifecycle workspace', to: '/lifecycle/FDR-2026-017' }],
+      links: [{ label: 'Open lifecycle workspace', to: '/app/lifecycle/FDR-2026-017' }],
       instrumentId: 'FDR-2026-017',
     }
   }
@@ -144,8 +144,8 @@ function runReleaseScenario() {
       ),
     ],
     links: [
-      { label: 'Open lifecycle workspace', to: '/lifecycle/FDR-2026-017' },
-      { label: 'Inspect audit events', to: '/audit?entity=FDR-2026-017' },
+      { label: 'Open lifecycle workspace', to: '/app/lifecycle/FDR-2026-017' },
+      { label: 'Inspect audit events', to: '/app/governance?view=audit&entity=FDR-2026-017' },
     ],
     instrumentId: 'FDR-2026-017',
   }
@@ -162,7 +162,7 @@ function runRenewalScenario() {
       ok: false,
       summary: 'No deadline action exists for FDR-2026-003 in the current state.',
       steps: [step('Deadline action missing', 'The record may have moved out of the renewal window.', 'blocked')],
-      links: [{ label: 'Open deadlines', to: '/deadlines' }],
+      links: [{ label: 'Open deadlines', to: '/app/lifecycle?view=deadlines' }],
     }
   }
   const alreadyAcknowledged = action.status === 'acknowledged' || action.status === 'completed'
@@ -207,8 +207,8 @@ function runRenewalScenario() {
       ),
     ],
     links: [
-      { label: 'Open deadline queue', to: '/deadlines?focus=renewal%3AFDR-2026-003' },
-      { label: 'Open instrument', to: '/instruments/FDR-2026-003' },
+      { label: 'Open deadline queue', to: '/app/lifecycle?view=deadlines&focus=renewal%3AFDR-2026-003' },
+      { label: 'Open instrument', to: '/app/instruments/FDR-2026-003' },
     ],
     instrumentId: 'FDR-2026-003',
   }
@@ -257,8 +257,8 @@ function runEvidenceScenario() {
       ),
     ],
     links: [
-      { label: 'Open evidence passport', to: '/instruments/FDR-2026-004?tab=evidence' },
-      { label: 'Inspect instrument', to: '/instruments/FDR-2026-004' },
+      { label: 'Open evidence passport', to: '/app/instruments/FDR-2026-004?tab=evidence' },
+      { label: 'Inspect instrument', to: '/app/instruments/FDR-2026-004' },
     ],
     instrumentId: 'FDR-2026-004',
   }
@@ -282,7 +282,7 @@ function runCorrectionScenario() {
         ok: false,
         summary: result.reason,
         steps: [step('Correction blocked', result.reason, 'blocked')],
-        links: [{ label: 'Open instrument', to: '/instruments/FDR-2026-009' }],
+        links: [{ label: 'Open instrument', to: '/app/instruments/FDR-2026-009' }],
       }
     }
     corrected = true
@@ -317,8 +317,8 @@ function runCorrectionScenario() {
       ),
     ],
     links: [
-      { label: 'Open instrument history', to: '/instruments/FDR-2026-009?tab=integrity' },
-      { label: 'Inspect audit trail', to: '/audit?entity=FDR-2026-009' },
+      { label: 'Open instrument history', to: '/app/instruments/FDR-2026-009?tab=integrity' },
+      { label: 'Inspect audit trail', to: '/app/governance?view=audit&entity=FDR-2026-009' },
     ],
     instrumentId: 'FDR-2026-009',
   }

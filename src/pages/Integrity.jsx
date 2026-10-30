@@ -94,7 +94,7 @@ export default function Integrity() {
       </InfoNote>
 
       <div className="grid gap-5 xl:grid-cols-12">
-        <div className="xl:col-span-9">
+        <div className="min-w-0 xl:col-span-9">
           <section className="panel overflow-hidden">
             <div className="grid gap-3 border-b border-line px-4 py-3 sm:grid-cols-4">
               <SearchInput value={query} onChange={setQuery} placeholder="Search finding, record, rule…" />
@@ -182,7 +182,7 @@ export default function Integrity() {
           </section>
         </div>
 
-        <aside className="space-y-5 xl:col-span-3">
+        <aside className="min-w-0 space-y-5 xl:col-span-3">
           <section className="panel">
             <div className="border-b border-line px-4 py-3">
               <div className="overline mb-1">Rule coverage</div>

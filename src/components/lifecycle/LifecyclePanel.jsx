@@ -141,7 +141,7 @@ export function LifecyclePanel({ instrument, findings, state }) {
                   <ShieldCheck size={13} className={instrument.verificationStatus === 'confirmed' ? 'text-success' : 'text-warning'} />
                   {instrument.verificationStatus.replaceAll('_', ' ')}
                   <span className="text-muted">·</span>
-                  <Link to={`/verification/${instrument.id}`} className="text-forest hover:text-copper">
+                  <Link to={`/app/verification/${instrument.id}`} className="text-forest hover:text-copper">
                     Open verification
                   </Link>
                 </dd>
@@ -321,7 +321,7 @@ export function LifecyclePanel({ instrument, findings, state }) {
                 ))}
               </ul>
               <div className="border-t border-line px-4 py-2.5">
-                <Link to="/deadlines" className="btn-ghost btn-xs w-full">
+                <Link to="/app/lifecycle?view=deadlines" className="btn-ghost btn-xs w-full">
                   Manage in deadline queue <ArrowRight size={10} />
                 </Link>
               </div>

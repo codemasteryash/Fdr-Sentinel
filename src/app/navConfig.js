@@ -1,72 +1,60 @@
 import {
   LayoutDashboard,
   FileText,
-  Building2,
-  ShieldAlert,
-  Fingerprint,
   ClipboardCheck,
   GitBranch,
-  CalendarClock,
-  ScrollText,
-  BarChart3,
-  PlayCircle,
-  Settings,
+  Landmark,
 } from 'lucide-react'
 
-export const NAV_GROUPS = [
+export const NAV_ITEMS = [
   {
-    label: 'Oversight',
-    items: [
-      { index: '01', label: 'Overview', to: '/dashboard', icon: LayoutDashboard },
-      { index: '02', label: 'FDR Registry', to: '/instruments', icon: FileText },
-      { index: '03', label: 'Institutions', to: '/institutions', icon: Building2 },
-    ],
+    index: '01',
+    label: 'Overview',
+    description: 'Attention and progression',
+    to: '/app/overview',
+    icon: LayoutDashboard,
   },
   {
-    label: 'Intelligence',
-    items: [
-      { index: '04', label: 'Integrity Intelligence', to: '/integrity', icon: ShieldAlert },
-      { index: '05', label: 'Evidence Passport', to: '/evidence', icon: Fingerprint },
-      { index: '06', label: 'Verification Center', to: '/verification', icon: ClipboardCheck },
-    ],
+    index: '02',
+    label: 'Instruments',
+    description: 'Registry and evidence',
+    to: '/app/instruments',
+    icon: FileText,
   },
   {
-    label: 'Operations',
-    items: [
-      { index: '07', label: 'Lifecycle & Approvals', to: '/lifecycle', icon: GitBranch },
-      { index: '08', label: 'Deadline Intelligence', to: '/deadlines', icon: CalendarClock },
-    ],
+    index: '03',
+    label: 'Verification Center',
+    description: 'Review and confirm',
+    to: '/app/verification',
+    icon: ClipboardCheck,
   },
   {
-    label: 'Governance',
-    items: [
-      { index: '09', label: 'Audit Trail', to: '/audit', icon: ScrollText },
-      { index: '10', label: 'Reports & Analytics', to: '/reports', icon: BarChart3 },
-    ],
+    index: '04',
+    label: 'Lifecycle & Deadlines',
+    description: 'State changes and due work',
+    to: '/app/lifecycle',
+    icon: GitBranch,
   },
   {
-    label: 'Prototype',
-    items: [
-      { index: '11', label: 'Demo Scenarios', to: '/demo-scenarios', icon: PlayCircle },
-      { index: '12', label: 'Settings', to: '/settings', icon: Settings },
-    ],
+    index: '05',
+    label: 'Governance & Reports',
+    description: 'Audit, institutions, analytics',
+    to: '/app/governance',
+    icon: Landmark,
   },
 ]
 
 export const ROUTE_LABELS = {
-  dashboard: 'Overview',
-  instruments: 'FDR Registry',
-  integrity: 'Integrity Intelligence',
-  evidence: 'Evidence Passport',
+  app: 'Workspace',
+  overview: 'Overview',
+  instruments: 'Instruments',
   verification: 'Verification Center',
-  lifecycle: 'Lifecycle & Approvals',
-  deadlines: 'Deadline Intelligence',
-  audit: 'Audit Trail',
+  lifecycle: 'Lifecycle & Deadlines',
+  governance: 'Governance & Reports',
   institutions: 'Institutions',
-  reports: 'Reports & Analytics',
-  'demo-scenarios': 'Demo Scenarios',
+  demo: 'Demo Scenarios',
   settings: 'Settings',
   new: 'Register FDR',
 }
 
-export const ALL_NAV_ITEMS = NAV_GROUPS.flatMap((group) => group.items)
+export const ALL_NAV_ITEMS = NAV_ITEMS

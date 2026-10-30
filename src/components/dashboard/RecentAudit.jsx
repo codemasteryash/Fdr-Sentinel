@@ -16,7 +16,7 @@ export function RecentAudit({ events }) {
           <div className="overline">Decision history</div>
           <h2 className="font-display text-lg text-ink">Recent audit events</h2>
         </div>
-        <Link to="/audit" className="btn-icon h-6 w-6" aria-label="Open audit trail">
+        <Link to="/app/governance?view=audit" className="btn-icon h-6 w-6" aria-label="Open audit trail">
           <ArrowRight size={13} />
         </Link>
       </div>

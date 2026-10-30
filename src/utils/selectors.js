@@ -267,7 +267,7 @@ export function globalSearch(state, rawQuery) {
       id: instrument.id,
       title: instrument.id,
       subtitle: `${instrument.reference} · ${instrument.institutionName}`,
-      href: `/instruments/${instrument.id}`,
+      href: `/app/instruments/${instrument.id}`,
       meta: formatCurrency(instrument.amount),
     }))
   if (instruments.length) results.push({ group: 'Instruments', items: instruments })
@@ -284,7 +284,7 @@ export function globalSearch(state, rawQuery) {
       id: institution.id,
       title: institution.name,
       subtitle: `${institution.city}, ${institution.state}`,
-      href: `/institutions/${institution.id}`,
+      href: `/app/institutions/${institution.id}`,
       meta: institution.id,
     }))
   if (institutions.length) results.push({ group: 'Institutions', items: institutions })
@@ -296,7 +296,7 @@ export function globalSearch(state, rawQuery) {
       id: `bank-${bank}`,
       title: bank,
       subtitle: 'Bank · filter registry',
-      href: `/instruments?bank=${encodeURIComponent(bank)}`,
+      href: `/app/instruments?bank=${encodeURIComponent(bank)}`,
       meta: 'Registry',
     }))
   if (banks.length) results.push({ group: 'Banks', items: banks })
@@ -313,7 +313,7 @@ export function globalSearch(state, rawQuery) {
       id: finding.id,
       title: finding.id,
       subtitle: finding.title,
-      href: `/integrity?finding=${finding.id}`,
+      href: `/app/verification?view=findings&finding=${finding.id}`,
       meta: finding.severity,
     }))
   if (findings.length) results.push({ group: 'Integrity findings', items: findings })
@@ -330,7 +330,7 @@ export function globalSearch(state, rawQuery) {
       id: record.id,
       title: `${record.instrumentId} · ${record.fieldLabel}`,
       subtitle: String(record.submittedValue || 'Missing value'),
-      href: `/instruments/${record.instrumentId}?tab=evidence&field=${record.field}`,
+      href: `/app/instruments/${record.instrumentId}?tab=evidence&field=${record.field}`,
       meta: 'Evidence',
     }))
   if (evidence.length) results.push({ group: 'Evidence fields', items: evidence })

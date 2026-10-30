@@ -147,7 +147,7 @@ export default function RegisterInstrument() {
           ? result.storageWarning
           : 'Metadata, field provenance, and audit events were written to this browser.',
       })
-      navigate(`/instruments/${result.id}`)
+      navigate(`/app/instruments/${result.id}`)
     } catch {
       toast.error('Unexpected error while saving the instrument.')
     } finally {
@@ -167,7 +167,7 @@ export default function RegisterInstrument() {
           Role permissions are checked in the instrument service, not only by hiding buttons. Switch
           to Institution Officer or AICTE Administrator from the top navigation to register a record.
         </InfoNote>
-        <Link to="/instruments" className="btn-secondary mt-4">
+        <Link to="/app/instruments" className="btn-secondary mt-4">
           <ArrowLeft size={14} /> Back to registry
         </Link>
       </div>
@@ -192,7 +192,7 @@ export default function RegisterInstrument() {
           </>
         }
         actions={
-          <Link to="/instruments" className="btn-secondary">
+          <Link to="/app/instruments" className="btn-secondary">
             <ArrowLeft size={14} /> Back to registry
           </Link>
         }
@@ -535,7 +535,7 @@ export default function RegisterInstrument() {
                   </p>
                 )}
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-                  <Link to="/instruments" className="btn-ghost btn-sm">
+                  <Link to="/app/instruments" className="btn-ghost btn-sm">
                     Cancel
                   </Link>
                   <button type="submit" className="btn-dark" disabled={submitting}>

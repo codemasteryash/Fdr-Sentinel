@@ -47,7 +47,7 @@ function AccessRestricted({ instrument, user }) {
         authorization boundary. Switch role or return to the registry.
       </InfoNote>
       <div className="mt-4 flex gap-2">
-        <Link to="/instruments" className="btn-secondary">
+        <Link to="/app/instruments" className="btn-secondary">
           <ArrowLeft size={14} /> Registry
         </Link>
       </div>
@@ -64,7 +64,7 @@ function NotFoundInstrument() {
         title="Instrument not found"
         description="No synthetic record with this identifier exists in the current browser state. It may have been removed by a demo reset or the URL may be incorrect."
       />
-      <Link to="/instruments" className="btn-dark">
+      <Link to="/app/instruments" className="btn-dark">
         <ArrowLeft size={14} /> Return to registry
       </Link>
     </div>
@@ -95,10 +95,10 @@ function ExtractionWorkspace({ instrument }) {
 
   return (
     <div className="grid gap-5 xl:grid-cols-12">
-      <div className="xl:col-span-8">
+      <div className="min-w-0 xl:col-span-8">
         <DocumentPanel instrument={instrument} heightClass="h-[680px]" />
       </div>
-      <aside className="space-y-5 xl:col-span-4">
+      <aside className="min-w-0 space-y-5 xl:col-span-4">
         <section className="panel">
           <div className="border-b border-line px-4 py-3">
             <div className="overline mb-1">Document record</div>
@@ -239,7 +239,7 @@ export default function InstrumentDetail() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-1.5 text-[10px] text-muted">
-        <Link to="/instruments" className="hover:text-forest">
+        <Link to="/app/instruments" className="hover:text-forest">
           Registry
         </Link>
         <ChevronRight size={10} />
@@ -254,7 +254,7 @@ export default function InstrumentDetail() {
         description={
           <>
             {instrument.bank} · {instrument.branch}. Held by{' '}
-            <Link to={`/institutions/${instrument.institutionId}`} className="text-forest hover:text-copper">
+            <Link to={`/app/institutions/${instrument.institutionId}`} className="text-forest hover:text-copper">
               {instrument.institutionName}
             </Link>
             . Principal {formatCurrency(instrument.amount)}; matures {formatDate(instrument.maturityDate)}{' '}
@@ -291,7 +291,7 @@ export default function InstrumentDetail() {
               </button>
             )}
             {!['released', 'rejected'].includes(instrument.lifecycleStatus) && (
-              <Link to={`/lifecycle/${instrument.id}`} className="btn-dark">
+              <Link to={`/app/lifecycle/${instrument.id}`} className="btn-dark">
                 <GitBranch size={14} /> Lifecycle action
               </Link>
             )}

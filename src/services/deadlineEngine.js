@@ -423,7 +423,7 @@ export function escalateDeadline(id, note = '', user) {
     title: `Escalated: ${action.title}`,
     message,
     instrumentId: action.instrumentId,
-    href: `/deadlines?focus=${encodeURIComponent(id)}`,
+    href: `/app/lifecycle?view=deadlines&focus=${encodeURIComponent(id)}`,
     actionLabel: 'Open deadline',
   })
   return { ok: true }

@@ -9,7 +9,7 @@ export const SCENARIOS = [
     instrumentId: 'FDR-2026-004',
     relatedInstrumentId: 'FDR-2026-011',
     findingId: 'FND-2026-001',
-    route: '/integrity?finding=FND-2026-001',
+    route: '/app/verification?view=findings&finding=FND-2026-001',
     cta: 'Open integrity finding',
     accent: 'critical',
     steps: [
@@ -30,7 +30,7 @@ export const SCENARIOS = [
       'The submitted reference SLB-54I902 and the extracted reference SLB-541902 align only after OCR normalization. See why extraction is not verification.',
     instrumentId: 'FDR-2026-006',
     findingId: 'FND-2026-003',
-    route: '/instruments/FDR-2026-006?tab=evidence',
+    route: '/app/instruments/FDR-2026-006?tab=evidence',
     cta: 'Inspect evidence passport',
     accent: 'warning',
     steps: [
@@ -51,7 +51,7 @@ export const SCENARIOS = [
       'FDR-2026-017 is under release review but has no recorded approving-authority decision. Attempt the release and see the transition blocked with an audit event.',
     instrumentId: 'FDR-2026-017',
     findingId: 'FND-2026-009',
-    route: '/lifecycle/FDR-2026-017',
+    route: '/app/lifecycle/FDR-2026-017',
     cta: 'Open lifecycle workspace',
     accent: 'critical',
     steps: [
@@ -71,7 +71,7 @@ export const SCENARIOS = [
     description:
       'FDR-2026-003 matures inside the 30-day window. Review the configured lead time, acknowledge the generated action, and watch the queue update.',
     instrumentId: 'FDR-2026-003',
-    route: '/deadlines?focus=renewal%3AFDR-2026-003',
+    route: '/app/lifecycle?view=deadlines&focus=renewal%3AFDR-2026-003',
     cta: 'Open deadline queue',
     accent: 'warning',
     steps: [
@@ -90,7 +90,7 @@ export const SCENARIOS = [
     description:
       'FDR-2026-004 is only partially confirmed. Inspect which fields are independently confirmed in the demo, which remain pending, and why the instrument cannot be labelled fully verified.',
     instrumentId: 'FDR-2026-004',
-    route: '/instruments/FDR-2026-004?tab=evidence',
+    route: '/app/instruments/FDR-2026-004?tab=evidence',
     cta: 'Open evidence passport',
     accent: 'info',
     steps: [
@@ -111,7 +111,7 @@ export const SCENARIOS = [
       'FDR-2026-009 has a submitted-versus-extracted amount variance. Apply a correction, re-run integrity analysis, and confirm the original finding remains in history.',
     instrumentId: 'FDR-2026-009',
     findingId: 'FND-2026-004',
-    route: '/instruments/FDR-2026-009?tab=integrity',
+    route: '/app/instruments/FDR-2026-009?tab=integrity',
     cta: 'Open integrity history',
     accent: 'success',
     steps: [
@@ -126,25 +126,25 @@ export const SCENARIOS = [
 ]
 
 export const DEMO_PATH = [
-  { label: 'See institutional scale and urgent actions', route: '/dashboard' },
+  { label: 'See institutional scale and urgent actions', route: '/app/overview' },
   {
     label: 'Inspect a cross-institution potential duplicate',
-    route: '/integrity?finding=FND-2026-001',
+    route: '/app/verification?view=findings&finding=FND-2026-001',
   },
   {
     label: 'Compare submitted, extracted, and unconfirmed fields',
-    route: '/instruments/FDR-2026-004?tab=evidence',
+    route: '/app/instruments/FDR-2026-004?tab=evidence',
   },
   {
     label: 'Attempt a prohibited release transition',
-    route: '/lifecycle/FDR-2026-017',
+    route: '/app/lifecycle/FDR-2026-017',
   },
   {
     label: 'Review an overdue renewal queue',
-    route: '/deadlines?focus=renewal%3AFDR-2025-024',
+    route: '/app/lifecycle?view=deadlines&focus=renewal%3AFDR-2025-024',
   },
   {
     label: 'Verify the blocked transition is recorded',
-    route: '/audit?entity=FDR-2026-017',
+    route: '/app/governance?view=audit&entity=FDR-2026-017',
   },
 ]

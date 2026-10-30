@@ -17,21 +17,21 @@ const CELLS = (metrics) => [
     value: metrics.institutions,
     detail: `${metrics.activeInstitutions} active · ${metrics.institutions - metrics.activeInstitutions} under review`,
     icon: Building2,
-    to: '/institutions',
+    to: '/app/governance?view=institutions',
   },
   {
     label: 'Registered FDRs',
     value: metrics.instruments,
     detail: `${formatCompactCurrency(metrics.totalExposure)} total exposure`,
     icon: FileText,
-    to: '/instruments',
+    to: '/app/instruments',
   },
   {
     label: 'Awaiting verification',
     value: metrics.awaitingVerification,
     detail: `${metrics.verifiedPercent}% of active instruments confirmed`,
     icon: ClipboardCheck,
-    to: '/verification',
+    to: '/app/verification',
     tone: metrics.awaitingVerification > 10 ? 'copper' : null,
   },
   {
@@ -39,7 +39,7 @@ const CELLS = (metrics) => [
     value: metrics.duplicateConflicts,
     detail: `${metrics.criticalFindings} critical findings to review`,
     icon: ShieldAlert,
-    to: '/integrity?severity=critical',
+    to: '/app/verification?view=findings&severity=critical',
     tone: metrics.duplicateConflicts > 0 ? 'copper' : null,
   },
   {
@@ -47,14 +47,14 @@ const CELLS = (metrics) => [
     value: metrics.upcomingMaturity,
     detail: 'Action window configured at 90 / 60 / 30 days',
     icon: CalendarClock,
-    to: '/deadlines?type=maturity',
+    to: '/app/lifecycle?view=deadlines&type=maturity',
   },
   {
     label: 'Overdue renewals',
     value: metrics.overdueRenewal,
     detail: `${metrics.deadlineOverdue} deadline actions overdue`,
     icon: TimerOff,
-    to: '/deadlines?priority=overdue',
+    to: '/app/lifecycle?view=deadlines&priority=overdue',
     tone: metrics.overdueRenewal > 0 ? 'critical' : null,
   },
   {
@@ -62,14 +62,14 @@ const CELLS = (metrics) => [
     value: metrics.pendingRelease,
     detail: 'Release requests and approvals in progress',
     icon: LogOut,
-    to: '/lifecycle?state=release_review',
+    to: '/app/lifecycle',
   },
   {
     label: 'Open findings',
     value: metrics.openFindings,
     detail: `${metrics.instrumentsWithDiscrepancies} instruments with data discrepancies`,
     icon: AlertTriangle,
-    to: '/integrity?review=open',
+    to: '/app/verification?view=findings&review=open',
   },
 ]
 

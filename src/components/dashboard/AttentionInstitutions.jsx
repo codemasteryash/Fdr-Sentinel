@@ -22,7 +22,7 @@ export function AttentionInstitutions({ state }) {
           <h2 className="font-display text-lg text-ink">Institutions requiring attention</h2>
         </div>
         <Link
-          to="/institutions"
+          to="/app/governance?view=institutions"
           className="group inline-flex items-center gap-1 text-[10.5px] font-medium text-forest hover:text-copper"
         >
           All institutions
@@ -46,7 +46,7 @@ export function AttentionInstitutions({ state }) {
               <tr key={institution.id}>
                 <td>
                   <Link
-                    to={`/institutions/${institution.id}`}
+                    to={`/app/institutions/${institution.id}`}
                     className="font-medium text-ink hover:text-copper"
                   >
                     {institution.shortName}

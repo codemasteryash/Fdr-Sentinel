@@ -7,29 +7,41 @@ export function Breadcrumbs() {
   const location = useLocation()
   const state = useDemoState()
   const parts = location.pathname.split('/').filter(Boolean)
-  if (!parts.length) return null
+  if (parts[0] !== 'app' || !parts[1]) return null
 
-  const root = parts[0]
-  const crumbs = [{ label: ROUTE_LABELS[root] ?? root, to: `/${root}` }]
+  const workspace = parts[1]
+  const crumbs = [
+    {
+      label: ROUTE_LABELS[workspace] ?? workspace,
+      to:
+        workspace === 'institutions'
+          ? '/app/governance?view=institutions'
+          : `/app/${workspace}`,
+    },
+  ]
 
-  if (parts[1]) {
-    if (root === 'instruments' && parts[1] === 'new') {
+  if (parts[2]) {
+    if (workspace === 'instruments' && parts[2] === 'new') {
       crumbs.push({ label: 'Register FDR', to: null })
-    } else if (root === 'instruments') {
-      const instrument = state.instruments.find((item) => item.id === parts[1])
-      crumbs.push({ label: instrument?.reference ?? parts[1], to: null })
-    } else if (root === 'institutions') {
-      const institution = state.institutions.find((item) => item.id === parts[1])
-      crumbs.push({ label: institution?.shortName ?? parts[1], to: null })
-    } else if (['verification', 'lifecycle'].includes(root)) {
-      crumbs.push({ label: parts[1], to: null })
+    } else if (workspace === 'instruments') {
+      const instrument = state.instruments.find((item) => item.id === parts[2])
+      crumbs.push({ label: instrument?.reference ?? parts[2], to: null })
+    } else if (workspace === 'institutions') {
+      const institution = state.institutions.find((item) => item.id === parts[2])
+      crumbs.push({ label: institution?.shortName ?? parts[2], to: null })
+    } else if (workspace === 'lifecycle') {
+      const instrument = state.instruments.find((item) => item.id === parts[2])
+      crumbs.push({ label: instrument?.reference ?? parts[2], to: null })
+    } else if (workspace === 'verification') {
+      const instrument = state.instruments.find((item) => item.id === parts[2])
+      crumbs.push({ label: instrument?.reference ?? parts[2], to: null })
     }
   }
 
   return (
     <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1.5">
       <Link
-        to="/dashboard"
+        to="/app/overview"
         className="hidden text-[10px] font-medium uppercase tracking-[0.1em] text-muted transition-colors hover:text-copper sm:block"
       >
         Sentinel

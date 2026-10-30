@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
+  CalendarClock,
   CheckCircle2,
   Clock,
   GitBranch,
+  Lock,
   ShieldCheck,
   Stamp,
 } from 'lucide-react'
@@ -14,12 +16,13 @@ import { PageHeader, InfoNote, EmptyState, SectionHeading } from '../components/
 import { LifecycleBadge, VerificationBadge, StatusTriad, StatusBadge } from '../components/shared/StatusBadge'
 import { useDemoState } from '../hooks/useDemoState'
 import { useCurrentUser } from '../hooks/useCurrentUser'
-import { LIFECYCLE_LABELS } from '../data/statuses'
 import { can, PERMISSIONS } from '../data/users'
 import { formatCurrency, formatDate } from '../utils/format'
 import { AuditTimeline } from '../components/audit/AuditTimeline'
 import { LifecyclePanel } from '../components/lifecycle/LifecyclePanel'
 import { ReleaseApprovalDialog } from '../components/lifecycle/LifecycleActionDialog'
+import { buildDeadlineActions, getDeadlineStats } from '../services/deadlineEngine'
+import Deadlines from './Deadlines'
 
 function LifecycleCase({ instrumentId }) {
   const state = useDemoState()
@@ -33,7 +36,7 @@ function LifecycleCase({ instrumentId }) {
     return (
       <div>
         <PageHeader overline="Lifecycle · Not found" title="Record not found" description="This instrument does not exist in the current demo state." />
-        <Link to="/lifecycle" className="btn-secondary"><ArrowLeft size={14} /> Lifecycle queue</Link>
+        <Link to="/app/lifecycle" className="btn-secondary"><ArrowLeft size={14} /> Lifecycle queue</Link>
       </div>
     )
   }
@@ -42,25 +45,20 @@ function LifecycleCase({ instrumentId }) {
     return (
       <div>
         <PageHeader overline="Lifecycle · Access scope" title="Record outside your institution" description="The Institution Officer role is limited to its assigned institution." />
-        <Link to="/lifecycle" className="btn-secondary"><ArrowLeft size={14} /> Lifecycle queue</Link>
+        <Link to="/app/lifecycle" className="btn-secondary"><ArrowLeft size={14} /> Lifecycle queue</Link>
       </div>
     )
   }
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap items-center gap-1.5 text-[10px] text-muted">
-        <Link to="/lifecycle" className="hover:text-forest">Lifecycle & Approvals</Link>
-        <span>›</span>
-        <span className="font-mono text-inkSoft">{instrument.id}</span>
-      </div>
       <PageHeader
         overline="Lifecycle · Policy workspace"
         title={instrument.reference}
         description={`${instrument.institutionName}. ${instrument.bank}, ${instrument.branch}. Principal ${formatCurrency(instrument.amount)}; maturity ${formatDate(instrument.maturityDate)}.`}
         meta={<StatusTriad instrument={instrument} compact />}
         actions={
-          <Link to={`/instruments/${instrument.id}`} className="btn-secondary">
+          <Link to={`/app/instruments/${instrument.id}`} className="btn-secondary">
             Back to instrument <ArrowRight size={13} />
           </Link>
         }
@@ -95,50 +93,173 @@ function LifecycleOverview() {
       !['released', 'rejected'].includes(instrument.lifecycleStatus) &&
       instrument.verificationStatus !== 'confirmed',
   ).length
+  const [searchParams] = useSearchParams()
+  const activeView = searchParams.get('view') === 'deadlines' ? 'deadlines' : 'approvals'
+  const deadlineActions = buildDeadlineActions(state)
+  const deadlineStats = getDeadlineStats(deadlineActions)
+  const materialFor = (instrument) =>
+    state.findings.filter(
+      (finding) =>
+        finding.instrumentId === instrument.id &&
+        ['open', 'in_review', 'confirmed'].includes(finding.reviewStatus) &&
+        ['critical', 'high'].includes(finding.severity),
+    ).length
+  const gates = [
+    {
+      label: 'Verification confirmed',
+      count: releaseQueue.filter((instrument) => instrument.verificationStatus === 'confirmed').length,
+    },
+    {
+      label: 'No material findings',
+      count: releaseQueue.filter((instrument) => materialFor(instrument) === 0).length,
+    },
+    {
+      label: 'Sign-off recorded',
+      count: releaseQueue.filter((instrument) => instrument.approval?.approved).length,
+    },
+    {
+      label: 'Policy transition eligible',
+      count: releaseQueue.filter(
+        (instrument) =>
+          instrument.verificationStatus === 'confirmed' &&
+          materialFor(instrument) === 0 &&
+          instrument.approval?.approved,
+      ).length,
+    },
+  ]
 
   return (
     <div>
       <PageHeader
         overline="Operations · Controlled state changes"
-        title="Lifecycle & Approvals"
-        description="Move instruments through policy-defined states with separation of duties. Release requires confirming verification, no unresolved material findings, and a recorded approving-authority sign-off."
+        title="Lifecycle & Deadlines"
+        description="Release approvals and the derived action queue in one workspace. Release requires demo-confirmed verification, no unresolved material findings, and recorded approving-authority sign-off."
         meta={
-          <>
-            <span className="text-[10.5px] text-muted">{releaseQueue.length} release stage case(s)</span>
-            <span className="text-lineStrong">·</span>
-            <span className="text-[10.5px] text-muted">{verificationGated} record(s) not yet demo-confirmed</span>
-            <span className="text-lineStrong">·</span>
-            <span className="text-[10.5px] text-muted">Acting as {user.name}</span>
-          </>
+          activeView === 'deadlines' ? (
+            <>
+              <span className="text-[10.5px] text-muted">{deadlineActions.length} derived action(s)</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-[10.5px] text-critical">{deadlineStats.overdue} overdue</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-[10.5px] text-muted">Acting as {user.name}</span>
+            </>
+          ) : (
+            <>
+              <span className="text-[10.5px] text-muted">{releaseQueue.length} release stage case(s)</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-[10.5px] text-muted">{verificationGated} record(s) not yet demo-confirmed</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-[10.5px] text-muted">Acting as {user.name}</span>
+            </>
+          )
+        }
+        actions={
+          <Link
+            to={activeView === 'deadlines' ? '/app/lifecycle' : '/app/lifecycle?view=deadlines'}
+            className="btn-secondary"
+          >
+            {activeView === 'deadlines' ? <Stamp size={14} /> : <CalendarClock size={14} />}
+            {activeView === 'deadlines' ? 'Release approvals' : 'Deadline queue'}
+          </Link>
         }
       />
 
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          ['Release requested', distribution.release_requested ?? 0, 'Awaiting review or sign-off', 'info'],
-          ['Release under review', distribution.release_review ?? 0, 'Sign-off and policy checks', 'warning'],
-          ['Verified records', distribution.verified ?? 0, 'Eligible for renewal or release', 'success'],
-          ['Blocked / returned', (distribution.returned ?? 0) + (distribution.rejected ?? 0), 'Retained with reasons', 'critical'],
-        ].map(([label, value, detail, tone]) => (
-          <div key={label} className="panel px-4 py-3.5">
-            <div className="flex items-start justify-between">
-              <div className="overline mb-1">{label}</div>
-              <span className={`dot ${tone === 'critical' ? 'bg-critical' : tone === 'warning' ? 'bg-warning' : tone === 'success' ? 'bg-success' : 'bg-info'}`} />
-            </div>
-            <div className="font-display text-2xl text-ink">{value}</div>
-            <div className="text-[9.5px] text-muted">{detail}</div>
-          </div>
-        ))}
+      <div className="mb-5 flex flex-wrap items-center gap-1 border-y border-line bg-raised px-1 py-1">
+        <Link
+          to="/app/lifecycle"
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-medium transition-colors ${
+            activeView === 'approvals'
+              ? 'bg-forest text-paper'
+              : 'text-muted hover:bg-paper hover:text-ink'
+          }`}
+        >
+          <Stamp size={11} /> Release approvals
+          <span className="font-mono text-[8.5px] opacity-70">{releaseQueue.length}</span>
+        </Link>
+        <Link
+          to="/app/lifecycle?view=deadlines"
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-medium transition-colors ${
+            activeView === 'deadlines'
+              ? 'bg-forest text-paper'
+              : 'text-muted hover:bg-paper hover:text-ink'
+          }`}
+        >
+          <CalendarClock size={11} /> Deadline actions
+          <span className="font-mono text-[8.5px] opacity-70">
+            {deadlineActions.filter((action) => action.status !== 'completed').length}
+          </span>
+        </Link>
+        {deadlineStats.overdue > 0 && (
+          <span className="ml-auto inline-flex items-center gap-1 px-2 font-mono text-[8.5px] uppercase tracking-[0.05em] text-critical">
+            <AlertTriangle size={9} /> {deadlineStats.overdue} overdue
+          </span>
+        )}
       </div>
 
-      <InfoNote tone="copper" className="mb-5" title="Demo approvals are not authorization">
-        Release sign-off is a locally recorded demonstration action. It does not approve a financial
-        transaction, satisfy AICTE policy, or contact a bank. Every attempt — including blocked attempts —
-        is appended to the audit chain.
-      </InfoNote>
+      {activeView === 'deadlines' ? (
+        <Deadlines embedded />
+      ) : (
+        <>
+          <div className="mb-5 border border-line bg-raised">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-2.5">
+              <div>
+                <div className="overline mb-0.5">Release gate</div>
+                <div className="text-[10px] text-muted">
+                  All four checks must pass before the verified transition is allowed.
+                </div>
+              </div>
+              <span className="font-mono text-[9px] text-muted">
+                {releaseQueue.length} case(s) in release stage
+              </span>
+            </div>
+            <div className="grid gap-px bg-line sm:grid-cols-2 xl:grid-cols-4">
+              {gates.map((gate, index) => (
+                <div key={gate.label} className="bg-raised px-4 py-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-[8.5px] text-muted">0{index + 1}</span>
+                    {gate.count === releaseQueue.length ? (
+                      <CheckCircle2 size={11} className="text-success" />
+                    ) : (
+                      <Lock size={10} className="text-warning" />
+                    )}
+                  </div>
+                  <div className="mt-1.5 text-[10px] font-medium leading-snug text-ink">
+                    {gate.label}
+                  </div>
+                  <div className="mt-0.5 font-mono text-[8.5px] text-muted">
+                    {gate.count}/{releaseQueue.length} case(s) passing
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              ['Release requested', distribution.release_requested ?? 0, 'Awaiting review or sign-off', 'info'],
+              ['Release under review', distribution.release_review ?? 0, 'Sign-off and policy checks', 'warning'],
+              ['Verified records', distribution.verified ?? 0, 'Eligible for renewal or release', 'success'],
+              ['Blocked / returned', (distribution.returned ?? 0) + (distribution.rejected ?? 0), 'Retained with reasons', 'critical'],
+            ].map(([label, value, detail, tone]) => (
+              <div key={label} className="panel px-4 py-3.5">
+                <div className="flex items-start justify-between">
+                  <div className="overline mb-1">{label}</div>
+                  <span className={`dot ${tone === 'critical' ? 'bg-critical' : tone === 'warning' ? 'bg-warning' : tone === 'success' ? 'bg-success' : 'bg-info'}`} />
+                </div>
+                <div className="font-display text-2xl text-ink">{value}</div>
+                <div className="text-[9.5px] text-muted">{detail}</div>
+              </div>
+            ))}
+          </div>
+
+          <InfoNote tone="copper" className="mb-5" title="Demo approvals are not authorization">
+            Release sign-off is a locally recorded demonstration action. It does not approve a financial
+            transaction, satisfy AICTE policy, or contact a bank. Every attempt — including blocked attempts —
+            is appended to the audit chain.
+          </InfoNote>
 
       <div className="grid gap-5 xl:grid-cols-12">
-        <div className="space-y-5 xl:col-span-8">
+        <div className="min-w-0 space-y-5 xl:col-span-8">
           <section className="panel overflow-hidden">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-3">
               <SectionHeading
@@ -181,7 +302,7 @@ function LifecycleOverview() {
                       return (
                         <tr key={instrument.id}>
                           <td>
-                            <Link to={`/lifecycle/${instrument.id}`} className="font-mono text-[10px] text-forest hover:text-copper">
+                            <Link to={`/app/lifecycle/${instrument.id}`} className="font-mono text-[10px] text-forest hover:text-copper">
                               {instrument.id}
                             </Link>
                             <div className="mt-0.5 text-[9px] text-muted">{instrument.reference}</div>
@@ -217,7 +338,7 @@ function LifecycleOverview() {
                                   <Stamp size={12} />
                                 </button>
                               )}
-                              <Link to={`/lifecycle/${instrument.id}`} className="btn-icon h-6 w-6" aria-label={`Open ${instrument.id}`}>
+                              <Link to={`/app/lifecycle/${instrument.id}`} className="btn-icon h-6 w-6" aria-label={`Open ${instrument.id}`}>
                                 <ArrowRight size={12} />
                               </Link>
                             </div>
@@ -239,14 +360,14 @@ function LifecycleOverview() {
               <AuditTimeline events={recentLifecycle} compact />
             </div>
             <div className="border-t border-line px-4 py-2.5">
-              <Link to="/audit" className="btn-ghost btn-xs">
+              <Link to="/app/governance?view=audit" className="btn-ghost btn-xs">
                 Open full audit trail <ArrowRight size={10} />
               </Link>
             </div>
           </section>
         </div>
 
-        <aside className="space-y-5 xl:col-span-4">
+        <aside className="min-w-0 space-y-5 xl:col-span-4">
           <section className="panel">
             <div className="border-b border-line px-4 py-3">
               <SectionHeading overline="State distribution" title="Where records sit" />
@@ -295,9 +416,12 @@ function LifecycleOverview() {
               <Clock size={12} /> Release SLA
             </div>
             <p className="mt-1 text-[10px] leading-relaxed text-inkSoft">
-              Release-stage cases generate a deadline action. Escalate or complete it from Deadline
-              Intelligence.
+              Release-stage cases generate a deadline action. Escalate or complete it from the unified
+              deadline queue.
             </p>
+            <Link to="/app/lifecycle?view=deadlines" className="btn-ghost btn-xs mt-2">
+              Open deadline queue <ArrowRight size={10} />
+            </Link>
           </div>
 
           <div className="border border-success/25 bg-success/[0.03] px-4 py-3">
@@ -311,6 +435,8 @@ function LifecycleOverview() {
           </div>
         </aside>
       </div>
+        </>
+      )}
 
       <ReleaseApprovalDialog
         open={Boolean(approvalTarget)}

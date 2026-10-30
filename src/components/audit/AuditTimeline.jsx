@@ -90,7 +90,7 @@ export function AuditTimeline({ events, compact = false, showEntity = false }) {
                     <span>·</span>
                     {event.entityType === 'instrument' ? (
                       <Link
-                        to={`/instruments/${event.entityId}`}
+                        to={`/app/instruments/${event.entityId}`}
                         className="inline-flex items-center gap-0.5 font-mono text-forest hover:text-copper"
                       >
                         {event.entityId} <ExternalLink size={8} />

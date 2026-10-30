@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Lock, ScrollText, ShieldCheck, ShieldAlert } from 'lucide-react'
 import { PageHeader, InfoNote } from '../components/shared/ui'
 import { AuditPanel } from '../components/audit/AuditPanel'
@@ -12,8 +13,10 @@ import { getUserById } from '../data/users'
 export default function Audit() {
   const state = useDemoState()
   const user = useCurrentUser()
+  const [searchParams] = useSearchParams()
   const allEvents = getAuditEvents(state)
   const chain = verifyAuditChain(state.auditEvents)
+  const entity = searchParams.get('entity')
 
   const scoped = useMemo(() => {
     if (user.role !== 'officer') return allEvents
@@ -44,8 +47,18 @@ export default function Audit() {
     })
   }, [allEvents, state, user])
 
-  const blocked = scoped.filter((event) => event.outcome === 'blocked').length
-  const actors = new Set(scoped.map((event) => event.actorId)).size
+  const visible = useMemo(() => {
+    if (!entity) return scoped
+    const term = entity.toLowerCase()
+    return scoped.filter(
+      (event) =>
+        event.entityId?.toLowerCase() === term ||
+        event.summary?.toLowerCase().includes(term),
+    )
+  }, [scoped, entity])
+
+  const blocked = visible.filter((event) => event.outcome === 'blocked').length
+  const actors = new Set(visible.map((event) => event.actorId)).size
 
   return (
     <div>
@@ -55,7 +68,7 @@ export default function Audit() {
         description="Inspect who did what, when, from which prior state, with what reason. Every consequential demo action is recorded, including blocked transitions. The chain detects local tampering but is not production cryptography."
         meta={
           <>
-            <span className="text-[10.5px] text-muted">{scoped.length} event(s) visible</span>
+            <span className="text-[10.5px] text-muted">{visible.length} event(s) visible</span>
             <span className="text-lineStrong">·</span>
             <span className="text-[10.5px] text-muted">{actors} distinct actor(s)</span>
             <span className="text-lineStrong">·</span>
@@ -68,12 +81,27 @@ export default function Audit() {
         }
       />
 
+      {entity && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border border-copper/30 bg-copper/[0.035] px-3.5 py-2">
+          <span className="text-[10px] text-inkSoft">
+            Showing events linked to <span className="font-mono text-ink">{entity}</span>. Matches use
+            the entity ID or a summary reference.
+          </span>
+          <Link
+            to="/app/governance?view=audit"
+            className="text-[9.5px] font-medium text-copper-dark hover:text-ink"
+          >
+            Clear entity filter
+          </Link>
+        </div>
+      )}
+
       <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {[
           ['Total events', allEvents.length, 'All local demo events', ScrollText, 'text-forest'],
           ['Chain status', chain.valid ? 'Valid' : 'Broken', `${chain.checked} event hashes checked`, chain.valid ? ShieldCheck : ShieldAlert, chain.valid ? 'text-success' : 'text-critical'],
           ['Blocked attempts', blocked, 'Policy or permission denied', Lock, 'text-critical'],
-          ['Visible scope', scoped.length, user.role === 'officer' ? 'Limited to your institution' : 'Organisation-wide', ShieldCheck, 'text-forest'],
+          ['Visible scope', visible.length, entity ? 'Filtered to selected entity' : user.role === 'officer' ? 'Limited to your institution' : 'Organisation-wide', ShieldCheck, 'text-forest'],
         ].map(([label, value, detail, Icon, tone]) => (
           <div key={label} className="panel px-4 py-3.5">
             <div className="flex items-start justify-between">
@@ -94,16 +122,17 @@ export default function Audit() {
       </InfoNote>
 
       <AuditPanel
-        events={scoped}
-        entityId={user.role === 'officer' ? user.institutionId : null}
+        events={visible}
+        entityId={entity || (user.role === 'officer' ? user.institutionId : null)}
         showEntity
-        title="All audit events"
+        title={entity ? 'Entity history' : 'All audit events'}
+        chain={chain}
       />
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3 text-[9.5px] text-muted">
         <span>
-          Actors: {[...new Set(scoped.map((event) => event.actorName))].slice(0, 6).join(' · ')}
-          {new Set(scoped.map((event) => event.actorName)).size > 6 ? ' · …' : ''}
+          Actors: {[...new Set(visible.map((event) => event.actorName))].slice(0, 6).join(' · ')}
+          {new Set(visible.map((event) => event.actorName)).size > 6 ? ' · …' : ''}
         </span>
         <span className="font-mono">
           Current role {user.role} · {user.name}

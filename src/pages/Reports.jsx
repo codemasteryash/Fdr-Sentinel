@@ -229,7 +229,7 @@ export default function Reports() {
       </div>
 
       <div className="mb-5 grid gap-5 lg:grid-cols-12">
-        <section className="panel lg:col-span-7">
+        <section className="panel min-w-0 lg:col-span-7">
           <div className="border-b border-line px-4 py-3">
             <SectionHeading overline="Exposure concentration" title="Principal by institution" description="Top 8 institutions in the selected reporting view." />
           </div>
@@ -243,13 +243,13 @@ export default function Reports() {
                   cursor={{ fill: 'rgba(29,59,47,0.04)' }}
                   content={<ChartTooltip valueFormatter={(value) => formatCurrency(value)} labelFormatter={(label, payload) => payload?.[0]?.payload?.fullName ?? label} />}
                 />
-                <Bar dataKey="exposure" name="Exposure" fill="#1D3B2F" maxBarSize={18} />
+                <Bar dataKey="exposure" name="Exposure" fill="#1D3B2F" maxBarSize={18} isAnimationActive={false} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </section>
 
-        <section className="panel lg:col-span-5">
+        <section className="panel min-w-0 lg:col-span-5">
           <div className="border-b border-line px-4 py-3">
             <SectionHeading overline="Assurance" title="Verification distribution" description="Demo confirmation state; not bank verification." />
           </div>
@@ -257,7 +257,7 @@ export default function Reports() {
             <div className="relative h-[190px] w-full max-w-[210px] shrink-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={verification} dataKey="value" nameKey="name" innerRadius={52} outerRadius={78} paddingAngle={1.2} stroke="#FAF8F3" strokeWidth={2}>
+                  <Pie data={verification} dataKey="value" nameKey="name" innerRadius={52} outerRadius={78} paddingAngle={1.2} stroke="#FAF8F3" strokeWidth={2} isAnimationActive={false}>
                     {verification.map((entry) => (
                       <Cell key={entry.key} fill={entry.color} />
                     ))}
@@ -284,7 +284,7 @@ export default function Reports() {
       </div>
 
       <div className="mb-5 grid gap-5 lg:grid-cols-12">
-        <section className="panel lg:col-span-7">
+        <section className="panel min-w-0 lg:col-span-7">
           <div className="border-b border-line px-4 py-3">
             <SectionHeading overline="Portfolio table" title="Institution summary" description="Exposure, verification, and active findings in the filtered view." />
           </div>
@@ -325,7 +325,7 @@ export default function Reports() {
           </div>
         </section>
 
-        <section className="panel lg:col-span-5">
+        <section className="panel min-w-0 lg:col-span-5">
           <div className="border-b border-line px-4 py-3">
             <SectionHeading overline="Lifecycle" title="State distribution" />
           </div>
@@ -336,7 +336,7 @@ export default function Reports() {
                 <XAxis dataKey="name" interval={0} angle={-35} textAnchor="end" height={50} tick={{ fontSize: 8 }} axisLine={{ stroke: '#DAD4C7' }} tickLine={false} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 9 }} axisLine={false} tickLine={false} width={34} />
                 <Tooltip cursor={{ fill: 'rgba(168,92,54,0.06)' }} content={<ChartTooltip valueFormatter={(value) => `${value} FDR(s)`} />} />
-                <Bar dataKey="value" name="Records" fill="#A85C36" maxBarSize={22}>
+                <Bar dataKey="value" name="Records" fill="#A85C36" maxBarSize={22} isAnimationActive={false}>
                   {lifecycle.map((entry) => (
                     <Cell key={entry.key} fill={entry.color} />
                   ))}
@@ -348,7 +348,7 @@ export default function Reports() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-12">
-        <section className="panel lg:col-span-7">
+        <section className="panel min-w-0 lg:col-span-7">
           <div className="border-b border-line px-4 py-3">
             <SectionHeading overline="Integrity" title="Active findings by severity" description="Restricted to instruments in the filtered view." />
           </div>
@@ -374,7 +374,7 @@ export default function Reports() {
           </div>
         </section>
 
-        <section className="panel lg:col-span-5">
+        <section className="panel min-w-0 lg:col-span-5">
           <div className="border-b border-line px-4 py-3">
             <SectionHeading overline="Assurance notes" title="How to read this report" />
           </div>

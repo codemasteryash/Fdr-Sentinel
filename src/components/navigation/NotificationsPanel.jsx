@@ -143,7 +143,7 @@ export function NotificationsPanel() {
               type="button"
               className="text-[10px] font-medium text-forest hover:text-copper"
               onClick={() => {
-                navigate('/deadlines')
+                navigate('/app/lifecycle?view=deadlines')
                 close()
               }}
             >

@@ -37,11 +37,11 @@ export function Topbar({ onOpenMobile }) {
 
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <Link
-            to="/demo-scenarios"
+            to="/app/demo"
             className="hidden items-center gap-1.5 border border-copper/25 bg-copper/[0.04] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.1em] text-copper-dark transition-colors hover:border-copper/50 xl:flex"
           >
             <span className="h-1 w-1 rounded-full bg-copper" />
-            Interactive prototype · Demo data
+            Guided demo · Synthetic data
           </Link>
 
           <button

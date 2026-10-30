@@ -127,21 +127,21 @@ function DeadlineDrawer({ action, open, onClose }) {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          <Link to={`/instruments/${action.instrumentId}`} className="btn-secondary btn-xs">
+          <Link to={`/app/instruments/${action.instrumentId}`} className="btn-secondary btn-xs">
             Open instrument <ArrowRight size={10} />
           </Link>
           {action.type === 'finding' && action.findingId && (
-            <Link to={`/integrity?finding=${action.findingId}`} className="btn-secondary btn-xs">
+            <Link to={`/app/verification?view=findings&finding=${action.findingId}`} className="btn-secondary btn-xs">
               Open finding <ArrowRight size={10} />
             </Link>
           )}
           {action.type === 'release' && (
-            <Link to={`/lifecycle/${action.instrumentId}`} className="btn-secondary btn-xs">
+            <Link to={`/app/lifecycle/${action.instrumentId}`} className="btn-secondary btn-xs">
               Open lifecycle <ArrowRight size={10} />
             </Link>
           )}
           {action.type === 'verification' && (
-            <Link to={`/verification/${action.instrumentId}`} className="btn-secondary btn-xs">
+            <Link to={`/app/verification/${action.instrumentId}`} className="btn-secondary btn-xs">
               Open verification <ArrowRight size={10} />
             </Link>
           )}
@@ -212,13 +212,13 @@ function DeadlineDrawer({ action, open, onClose }) {
   )
 }
 
-export default function Deadlines() {
+export default function Deadlines({ embedded = false }) {
   const state = useDemoState()
   const user = useCurrentUser()
   const [searchParams, setSearchParams] = useSearchParams()
   const [query, setQuery] = useState('')
-  const [priority, setPriority] = useState('active')
-  const [type, setType] = useState('')
+  const [priority, setPriority] = useState(() => searchParams.get('priority') || 'active')
+  const [type, setType] = useState(() => searchParams.get('type') || '')
   const [institution, setInstitution] = useState('')
   const [assignee, setAssignee] = useState('')
 
@@ -276,27 +276,47 @@ export default function Deadlines() {
 
   return (
     <div>
-      <PageHeader
-        overline="Operations · Unified action queue"
-        title="Deadline Intelligence"
-        description="One queue for maturity, renewal, verification, evidence, integrity, and release actions. Priorities derive from configurable lead times and are not a risk score."
-        meta={
-          <>
-            <span className="text-[10.5px] text-muted">{filtered.length} action(s) in view</span>
-            <span className="text-lineStrong">·</span>
-            <span className="text-[10.5px] text-critical">{stats.overdue} overdue</span>
-            <span className="text-lineStrong">·</span>
-            <span className="text-[10.5px] text-warning">{stats.critical} critical</span>
-            <span className="text-lineStrong">·</span>
-            <span className="text-[10.5px] text-muted">Acting as {user.name}</span>
-          </>
-        }
-        actions={
-          <button type="button" className="btn-secondary" onClick={handleExport}>
-            <Download size={14} /> Export queue
+      {embedded ? (
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border border-line bg-raised px-4 py-3">
+          <div>
+            <div className="overline mb-0.5">Derived action queue</div>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-muted">
+              <span>{filtered.length} action(s) in view</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-critical">{stats.overdue} overdue</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-warning">{stats.critical} critical</span>
+              <span className="text-lineStrong">·</span>
+              <span>Dates are synthetic</span>
+            </div>
+          </div>
+          <button type="button" className="btn-secondary btn-sm" onClick={handleExport}>
+            <Download size={13} /> Export queue
           </button>
-        }
-      />
+        </div>
+      ) : (
+        <PageHeader
+          overline="Operations · Unified action queue"
+          title="Deadline Intelligence"
+          description="One queue for maturity, renewal, verification, evidence, integrity, and release actions. Priorities derive from configurable lead times and are not a risk score."
+          meta={
+            <>
+              <span className="text-[10.5px] text-muted">{filtered.length} action(s) in view</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-[10.5px] text-critical">{stats.overdue} overdue</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-[10.5px] text-warning">{stats.critical} critical</span>
+              <span className="text-lineStrong">·</span>
+              <span className="text-[10.5px] text-muted">Acting as {user.name}</span>
+            </>
+          }
+          actions={
+            <button type="button" className="btn-secondary" onClick={handleExport}>
+              <Download size={14} /> Export queue
+            </button>
+          }
+        />
+      )}
 
       {stats.overdue > 0 && (
         <InfoNote tone="warning" className="mb-5" title={`${stats.overdue} overdue action(s)`}>
@@ -407,7 +427,7 @@ export default function Deadlines() {
                       <div className="font-mono text-[8.5px] text-muted">{action.id}</div>
                     </td>
                     <td>
-                      <Link to={`/instruments/${action.instrumentId}`} onClick={(event) => event.stopPropagation()} className="font-mono text-[9.5px] text-forest hover:text-copper">
+                      <Link to={`/app/instruments/${action.instrumentId}`} onClick={(event) => event.stopPropagation()} className="font-mono text-[9.5px] text-forest hover:text-copper">
                         {action.instrumentId}
                       </Link>
                       <div className="max-w-[170px] truncate text-[9px] text-muted">{action.institutionName}</div>

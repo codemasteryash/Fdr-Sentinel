@@ -1,22 +1,25 @@
 /* eslint-disable react-refresh/only-export-components */
 import { lazy, Suspense } from 'react'
-import { createBrowserRouter, Link, Navigate, useRouteError } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  Link,
+  Navigate,
+  useLocation,
+  useParams,
+  useRouteError,
+} from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
 import { LoadingState } from '../components/shared/ui'
+import Landing from '../pages/Landing'
 
 const Dashboard = lazy(() => import('../pages/Dashboard'))
 const Instruments = lazy(() => import('../pages/Instruments'))
 const RegisterInstrument = lazy(() => import('../pages/RegisterInstrument'))
 const InstrumentDetail = lazy(() => import('../pages/InstrumentDetail'))
-const Institutions = lazy(() => import('../pages/Institutions'))
 const InstitutionDetail = lazy(() => import('../pages/InstitutionDetail'))
-const Integrity = lazy(() => import('../pages/Integrity'))
-const Evidence = lazy(() => import('../pages/Evidence'))
 const Verification = lazy(() => import('../pages/Verification'))
 const Lifecycle = lazy(() => import('../pages/Lifecycle'))
-const Deadlines = lazy(() => import('../pages/Deadlines'))
-const Audit = lazy(() => import('../pages/Audit'))
-const Reports = lazy(() => import('../pages/Reports'))
+const Governance = lazy(() => import('../pages/Governance'))
 const DemoScenarios = lazy(() => import('../pages/DemoScenarios'))
 const Settings = lazy(() => import('../pages/Settings'))
 const NotFound = lazy(() => import('../pages/NotFound'))
@@ -46,7 +49,7 @@ function RouteError() {
   const message =
     error?.statusText ?? error?.message ?? 'An unexpected error occurred while loading this page.'
   return (
-    <div className="mx-auto max-w-xl py-16">
+    <div className="mx-auto max-w-xl px-4 py-16 sm:px-6">
       <div className="border border-critical/25 bg-raised px-6 py-7">
         <div className="overline text-critical">Application error</div>
         <h1 className="mt-2 font-display text-2xl text-ink">
@@ -57,8 +60,8 @@ function RouteError() {
           The prototype stores state locally. Reloading usually recovers a stale client state.
         </p>
         <div className="mt-5 flex gap-2">
-          <Link to="/dashboard" className="btn-dark btn-sm">
-            Return to dashboard
+          <Link to="/app/overview" className="btn-dark btn-sm">
+            Return to overview
           </Link>
           <button type="button" className="btn-secondary btn-sm" onClick={() => window.location.reload()}>
             Reload prototype
@@ -69,31 +72,65 @@ function RouteError() {
   )
 }
 
+function LegacyRedirect({ to }) {
+  const location = useLocation()
+  return <Navigate to={{ pathname: to, search: location.search }} replace />
+}
+
+function LegacyRecordRedirect({ section }) {
+  const { id } = useParams()
+  const location = useLocation()
+  return (
+    <Navigate
+      to={{ pathname: `/app/${section}/${id}`, search: location.search }}
+      replace
+    />
+  )
+}
+
 export const router = createBrowserRouter([
   {
     path: '/',
+    element: <Landing />,
+    errorElement: <RouteError />,
+  },
+  { path: '/dashboard', element: <LegacyRedirect to="/app/overview" /> },
+  { path: '/instruments/new', element: <LegacyRedirect to="/app/instruments/new" /> },
+  { path: '/instruments/:id', element: <LegacyRecordRedirect section="instruments" /> },
+  { path: '/instruments', element: <LegacyRedirect to="/app/instruments" /> },
+  { path: '/institutions/:id', element: <LegacyRecordRedirect section="institutions" /> },
+  { path: '/institutions', element: <LegacyRedirect to="/app/governance?view=institutions" /> },
+  { path: '/integrity', element: <LegacyRedirect to="/app/verification?view=findings" /> },
+  { path: '/evidence', element: <LegacyRedirect to="/app/instruments?view=evidence" /> },
+  { path: '/verification/:id', element: <LegacyRecordRedirect section="verification" /> },
+  { path: '/verification', element: <LegacyRedirect to="/app/verification" /> },
+  { path: '/lifecycle/:id', element: <LegacyRecordRedirect section="lifecycle" /> },
+  { path: '/lifecycle', element: <LegacyRedirect to="/app/lifecycle" /> },
+  { path: '/deadlines', element: <LegacyRedirect to="/app/lifecycle?view=deadlines" /> },
+  { path: '/audit', element: <LegacyRedirect to="/app/governance?view=audit" /> },
+  { path: '/reports', element: <LegacyRedirect to="/app/governance?view=reports" /> },
+  { path: '/demo-scenarios', element: <LegacyRedirect to="/app/demo" /> },
+  { path: '/settings', element: <LegacyRedirect to="/app/settings" /> },
+  {
+    path: '/app',
     element: <AppShell />,
     errorElement: <RouteError />,
     children: [
-      { index: true, element: <Navigate to="/dashboard" replace /> },
-      { path: 'dashboard', element: page(Dashboard) },
+      { index: true, element: <Navigate to="/app/overview" replace /> },
+      { path: 'overview', element: page(Dashboard) },
       { path: 'instruments', element: page(Instruments) },
       { path: 'instruments/new', element: page(RegisterInstrument) },
       { path: 'instruments/:id', element: page(InstrumentDetail) },
-      { path: 'institutions', element: page(Institutions) },
       { path: 'institutions/:id', element: page(InstitutionDetail) },
-      { path: 'integrity', element: page(Integrity) },
-      { path: 'evidence', element: page(Evidence) },
       { path: 'verification', element: page(Verification) },
       { path: 'verification/:id', element: page(Verification) },
       { path: 'lifecycle', element: page(Lifecycle) },
       { path: 'lifecycle/:id', element: page(Lifecycle) },
-      { path: 'deadlines', element: page(Deadlines) },
-      { path: 'audit', element: page(Audit) },
-      { path: 'reports', element: page(Reports) },
-      { path: 'demo-scenarios', element: page(DemoScenarios) },
+      { path: 'governance', element: page(Governance) },
+      { path: 'demo', element: page(DemoScenarios) },
       { path: 'settings', element: page(Settings) },
       { path: '*', element: page(NotFound) },
     ],
   },
+  { path: '*', element: page(NotFound) },
 ])

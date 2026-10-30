@@ -128,7 +128,7 @@ export default function Evidence() {
       </InfoNote>
 
       <div className="grid gap-5 xl:grid-cols-12">
-        <div className="xl:col-span-9">
+        <div className="min-w-0 xl:col-span-9">
           <section className="panel overflow-hidden">
             <div className="grid gap-3 border-b border-line px-4 py-3 sm:grid-cols-4">
               <SearchInput value={query} onChange={setQuery} placeholder="Search field, value, record…" />
@@ -184,7 +184,7 @@ export default function Evidence() {
                       <tr key={record.id}>
                         <td>
                           <Link
-                            to={`/instruments/${record.instrumentId}?tab=evidence&field=${record.field}`}
+                            to={`/app/instruments/${record.instrumentId}?tab=evidence&field=${record.field}`}
                             className="font-mono text-[10px] text-forest hover:text-copper"
                           >
                             {record.instrumentId}
@@ -215,7 +215,7 @@ export default function Evidence() {
                         <td className="whitespace-nowrap text-[9.5px] text-muted">{formatDate(record.lastUpdated)}</td>
                         <td>
                           <Link
-                            to={`/instruments/${record.instrumentId}?tab=evidence&field=${record.field}`}
+                            to={`/app/instruments/${record.instrumentId}?tab=evidence&field=${record.field}`}
                             className="btn-icon h-6 w-6"
                             aria-label={`Open ${record.fieldLabel} evidence`}
                           >
@@ -235,7 +235,7 @@ export default function Evidence() {
           </section>
         </div>
 
-        <aside className="space-y-5 xl:col-span-3">
+        <aside className="min-w-0 space-y-5 xl:col-span-3">
           <section className="panel">
             <div className="border-b border-line px-4 py-3">
               <div className="overline mb-1">Weakest records</div>
@@ -246,7 +246,7 @@ export default function Evidence() {
                 <li key={row.instrumentId} className="px-4 py-3">
                   <div className="flex items-center justify-between gap-2">
                     <Link
-                      to={`/instruments/${row.instrumentId}?tab=evidence`}
+                      to={`/app/instruments/${row.instrumentId}?tab=evidence`}
                       className="font-mono text-[9.5px] text-forest hover:text-copper"
                     >
                       {row.instrumentId}
